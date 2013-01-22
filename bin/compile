@@ -136,6 +136,18 @@ if [ ! "$SKIP_INSTALL" ]; then
   cd $WORKING_DIR
 
   hash -r
+
+  puts-step "Installing Lupa (0.20) and LuaJIT (2.0)"
+  curl -s http://pypi.python.org/packages/source/l/lupa/lupa-0.20.tar.gz | tar zx
+  cd lupa-0.20
+  curl -s http://luajit.org/download/LuaJIT-2.0.0.tar.gz | tar zx
+  cd LuaJIT-2.0.0
+  make PREFIX=/app CFLAGS="$CFLAGS -fPIC"
+  cd ..
+  python setup.py build_ext --inplace
+  python setup.py install
+  cd $WORKING_DIR
+
 else
   puts-step "Using Python runtime ($PYTHON_VERSION)"
 fi
